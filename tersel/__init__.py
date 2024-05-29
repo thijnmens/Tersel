@@ -1,12 +1,16 @@
 import os
-import sys
 import warnings
 
 import keyboard
 from colorama import Fore, Style
 from colorama import init as colorama_init
 
-VERSION: str = "0.0.1"
+from tersel.Option import Option
+from tersel.OptionList import OptionList
+
+VERSION: str = "0.0.2"
+Option = Option
+OptionList = OptionList
 
 
 class Tersel:
@@ -23,7 +27,7 @@ class Tersel:
         :param selected_color: Colorama color of selected option
         """
         self.title: str = title
-        self.options: [any] = options
+        self.options: [Option] = OptionList(options, line_start).to_list()
         self.max_options_shown = max_options_shown
         self.selected: int = 0
         self.line_start = line_start
@@ -34,12 +38,13 @@ class Tersel:
         self.clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 
         self.check_validity()
-        colorama_init()
+
+        colorama_init()  # Add colorama colors to terminal
 
     def check_validity(self) -> bool:
         """
         Checks whether all parameters are valid
-        :return: bool indicating of all checks passed
+        :return: True if all checks passed
         """
         passed = True
 
@@ -53,19 +58,22 @@ class Tersel:
 
         return passed
 
-    def show(self, clear: bool = True) -> any:
+    def show(self, clear: bool = True) -> tuple[int, any]:
         """
-        Shows the option dialog
-        :return: the chosen object from the options list
+        Prints the option dialog to console
+        :return: The chosen object from the options list
         """
 
         self.draw_options(clear)
+
+        # Link keys
         keyboard.on_press_key("up arrow", lambda _: self.on_arrow_up())
         keyboard.on_press_key("down arrow", lambda _: self.on_arrow_down())
-        keyboard.on_press_key("right arrow", lambda _: keyboard.press('enter'))
+
+        # Block until user has chosen
         input()
 
-        return self.options[self.selected]
+        return self.selected, self.options[self.selected]
 
     def on_arrow_up(self):
         if self.selected != 0:
@@ -81,10 +89,12 @@ class Tersel:
         if clear:
             self.clear()
 
+        # Print title
         self.print_line(f"{self.title_color}{self.title}")
+
+        # Print all options
         for i, option in enumerate(self.options):
-            text = f"{self.line_start}{option}"
-            self.print_line(text.format(index=i + 1), i == self.selected)
+            self.print_line(str(option).format(index=i + 1), i == self.selected)
 
     def print_line(self, text: str, selected: bool = False):
-        print(f"\n{self.selected_color if selected is True else self.option_color}{text}", end=Style.RESET_ALL)
+        print(f"{self.selected_color if selected is True else self.option_color}{text}", end=f"{Style.RESET_ALL}\n")
