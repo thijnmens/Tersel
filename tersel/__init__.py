@@ -1,9 +1,12 @@
 import os
+import sys
 import warnings
 
 import keyboard
 from colorama import Fore, Style
 from colorama import init as colorama_init
+
+VERSION: str = "0.0.1"
 
 
 class Tersel:

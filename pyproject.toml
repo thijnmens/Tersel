@@ -25,3 +25,6 @@ dependencies=[
 ]
 dynamic = ["version"]
 urls={github='https://github.com/thijnmens/tersel'}
+
+[tool.setuptools.dynamic]
+version = {attr = "tersel.VERSION"}
