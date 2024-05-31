@@ -9,7 +9,7 @@ authors = [
 ]
 description = 'A library for easily implementing selection prompts in the terminal'
 readme = 'readme.md'
-requires-python = '>=3.12'
+requires-python = '>=3.10'
 keywords = ['terminal', 'cli', 'selection']
 license = { text = 'CC BY-NC-SA 4.0' }
 classifiers = [
