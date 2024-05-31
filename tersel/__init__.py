@@ -8,7 +8,7 @@ from colorama import init as colorama_init
 from tersel.Option import Option
 from tersel.OptionList import OptionList
 
-VERSION: str = "0.0.2"
+VERSION: str = "0.0.3"
 Option = Option
 OptionList = OptionList
 
